@@ -22,3 +22,8 @@ target_include_directories(socks5_c_client
 target_link_libraries(socks5_c_client
   PUBLIC OpenSSL::SSL
   )
+if(WIN32)
+  target_link_libraries(socks5_c_client
+    PUBLIC wsock32 ws2_32
+    )
+endif()

@@ -2,6 +2,8 @@
 #define SOCKS5_C_CLIENT_TLS_H
 #pragma once
 
+#include "xsocks/tcp.h"
+
 #include <openssl/ssl.h>
 
 struct xsocks_openssl_ctx {
@@ -19,6 +21,6 @@ void
 xsocks_openssl_free(struct xsocks_openssl_ctx* ctx);
 
 int
-xsocks_tls_handshake(int sockfd, struct xsocks_openssl_ctx* tls);
+xsocks_tls_handshake(SOCKET sockfd, struct xsocks_openssl_ctx* tls);
 
 #endif
