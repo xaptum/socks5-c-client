@@ -44,24 +44,22 @@ xsocks_tls_handshake(SOCKET sockfd, struct xsocks_openssl_ctx* tls)
         return -1;
 
     if (SSL_set_min_proto_version(tls->ssl, TLS1_2_VERSION) != 1)
-        goto free_ssl;
+        goto error;
 
     // Nb. We have to explicitly cast to int for Windows (where Socket is unsigned).
     if (SSL_set_fd(tls->ssl, (int)sockfd) != 1)
-        goto free_ssl;
+        goto error;
 
     SSL_set_connect_state(tls->ssl);
     SSL_set_verify(tls->ssl, SSL_VERIFY_PEER, NULL);
 
     ret = SSL_do_handshake(tls->ssl);
     if (ret != 1)
-        goto free_ssl;
+        goto error;
 
-    goto out;
-
-free_ssl:
-    SSL_free(tls->ssl);
-
-out:
     return 0;
+
+error:
+    SSL_free(tls->ssl);
+    return -1;
 }
